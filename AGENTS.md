@@ -38,7 +38,7 @@ pnpm test --run -t 'creates new link'     # tests matching a name
 
 - ESLint and TypeScript extend generated `.nuxt` files. If they are missing, run `pnpm postinstall` (or `pnpm install`) before diagnosing config errors.
 - Authenticated tests need `NUXT_SITE_TOKEN`; local values are loaded from `.env`, with `.env.example` as the template.
-- There is no validation CI workflow. Run the relevant lint, typecheck, and test commands locally.
+- `.github/workflows/ci.yml` validates lint, types, build, upstream tests and the Dub migration converter on pushes and pull requests. Run relevant checks locally before pushing; CI does not deploy.
 - The pre-commit hook only runs `eslint --fix` on staged JS/TS/Vue files; it does not replace full-project verification.
 
 ## Architecture and data flow

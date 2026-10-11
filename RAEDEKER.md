@@ -4,6 +4,29 @@ This fork runs Sink independently of the Julsprint Django application. It uses
 Cloudflare Workers, D1 (authoritative links), KV (redirect cache), and Analytics
 Engine. It does not use Northflank containers or PostgreSQL.
 
+## Production status — 2026-10-11
+
+The twelve `l.raedeker.eu` links have been imported and the domain is connected
+to Sink. All twelve redirects were checked against the original Dub export,
+including exact destinations, case and timestamps. HTTPS, unauthenticated API
+rejection, and authenticated create/edit/delete operations passed on the new
+production endpoint. Analytics ingestion and the dashboard were verified with
+one synthetic test visit.
+
+- Dashboard: <https://l.raedeker.eu/dashboard>
+- Alternate dashboard during DNS propagation:
+  <https://raedeker-links.nameless-fog-4c15.workers.dev/dashboard>
+- Local checkout: `/Users/lbr/PycharmProjects/raedeker_links`
+- Setup PR: <https://github.com/raedically/Sink/pull/1>
+- Initial D1 backup: `private/sink-after-import-2026-10-11.sql`
+- Verified production export: `private/sink-export-production.json`
+
+Cloudflare's authoritative DNS and 1.1.1.1 return the Worker. Some local DNS
+caches still return Dub because the previous record had a one-day TTL. Both
+services retain the same twelve links during propagation. Avoid changing link
+destinations until the old TTL has elapsed. The six `dub.sh` links stay at Dub.
+Historic Dub statistics remain in the private export; Sink records new visits.
+
 ## Deployment profile
 
 - Worker and D1 name: `raedeker-links`
@@ -57,12 +80,19 @@ pnpm build
 pnpm deploy:raedeker
 ```
 
-Deployment uses `scripts/raedeker-config.mjs`, which generates ignored
+Deployment keeps `l.raedeker.eu` as a Worker custom domain, retains the stable
+workers.dev address, and disables version preview URLs. It uses
+`scripts/raedeker-config.mjs`, which generates ignored
 `wrangler.deploy.jsonc`, applies D1 migrations, and uploads the Worker and assets.
 Use **deploy:raedeker**, not upstream's generic deployment command. Existing
 encrypted Worker secrets are preserved. An expired CLI session needs a fresh
 Cloudflare login; the initial session intentionally has no offline refresh access.
 Do not accept Wrangler's broad default scopes without reviewing them.
+
+For a new Cloudflare account, Analytics Engine may need to be activated by
+adding the `ANALYTICS` binding (dataset `raedeker_links`) in the Worker dashboard
+and deploying that binding once. This resolved Cloudflare error 10089 during
+initial setup; it is not needed on every deployment.
 
 Git pushes alone currently run validation, not production deployment. Git-based
 automatic deployment would require a separately scoped persistent deploy token.

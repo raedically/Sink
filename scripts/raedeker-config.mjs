@@ -7,6 +7,9 @@ const path = new URL('../wrangler.deploy.jsonc', import.meta.url)
 const config = JSON.parse(await readFile(path, 'utf8'))
 config.name = 'raedeker-links'
 config.account_id = '9fd40fed9d563f740452a5f02c9defd7'
+config.workers_dev = true
+config.preview_urls = false
+config.routes = [{ pattern: 'l.raedeker.eu', custom_domain: true }]
 config.vars = {
   ...config.vars,
   NUXT_PUBLIC_PREVIEW_MODE: '',
