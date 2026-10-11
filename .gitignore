@@ -40,3 +40,7 @@ opencode.json
 
 # Local deepwork session state
 .slim/deepwork/
+
+# Private migration exports, credentials, and operational backups
+/private/
+__pycache__/

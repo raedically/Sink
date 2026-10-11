@@ -1,5 +1,7 @@
 # ⚡ Sink
 
+This fork hosts the raedeker.eu short-link service. See [installation and operations](RAEDEKER.md).
+
 **A Simple, Speedy, Secure, and Serverless Link Shortener with Analytics, Running Entirely on Cloudflare.**
 
 [Website](https://sink.cool) · [Documentation](https://docs.sink.cool) · [API Reference](https://sink.cool/_docs/scalar)

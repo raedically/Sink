@@ -6,6 +6,7 @@ on:
 
 jobs:
   issue-assistant:
+    if: github.repository == 'miantiao-me/Sink'
     runs-on: ubuntu-latest
     permissions:
       contents: read
